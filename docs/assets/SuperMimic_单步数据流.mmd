@@ -1,0 +1,24 @@
+flowchart TB
+    ST("$$\hat{\mathbf{s}}_t$$")
+    GOBS["观测头 · 解析示例<br/>$$g_\omega(\hat{\mathbf{s}}_t,\boldsymbol{\xi})$$"]
+    HIST["加入噪声 ηₜ<br/>10帧历史"]
+    PI["策略<br/>$$\pi_\theta(\cdot,\mathbf{g}_t)$$"]
+    AT("$$\mathbf{a}_t$$")
+    FDYN["动力学头 · 学习<br/>$$f_\omega(\hat{\mathbf{s}}_t,\mathbf{a}_t,\boldsymbol{\xi})$$"]
+    ST1("$$\hat{\mathbf{s}}_{t+1}$$")
+    RW["奖励头 · 解析示例<br/>$$r_\omega(\hat{\mathbf{s}}_t,\mathbf{a}_t,\mathbf{g}_t)$$"]
+    RT1("$$\hat r_{t+1}$$")
+    DW["终止头 · 解析示例<br/>$$d_\omega(\hat{\mathbf{s}}_t,\mathbf{g}_t)$$"]
+    DT("$$\hat d_t$$")
+    ST --> GOBS --> HIST --> PI --> AT --> FDYN --> ST1
+    ST --> FDYN
+    ST --> RW
+    AT --> RW --> RT1
+    ST --> DW --> DT
+    ST1 -. 下一时刻 .-> ST
+    classDef data fill:#ffffff,stroke:#4b5563,color:#111827,stroke-width:1.4px;
+    classDef proc fill:#eff5fc,stroke:#5278ac,color:#111827,stroke-width:1.4px;
+    classDef policy fill:#f4f5f6,stroke:#616b75,color:#111827,stroke-width:1.4px;
+    class ST,ST1,AT,RT1,DT data;
+    class GOBS,FDYN,RW,DW proc;
+    class HIST,PI policy;
